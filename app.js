@@ -7,7 +7,7 @@ const state = {
     cards: [],
     favorites: [],
     completedCards: [],
-    settings: { theme: 'default', fontSize: 'medium', soundEnabled: true },
+    settings: { theme: 'default', fontSize: 'medium' },
     notes: {},
 };
 
@@ -50,16 +50,32 @@ function cacheDom() {
 }
 
 // ===== PERSISTENCE =====
+function cardId(index) { return state.cards[index]?.id || 'card_' + (index + 1); }
+function cardIndexById(id) { const i = state.cards.findIndex(c => c.id === id); return i >= 0 ? i : 0; }
+
 function loadState() {
     try {
         const saved = localStorage.getItem('merhav_state');
         if (saved) {
             const parsed = JSON.parse(saved);
+            // Migrate from index-based to id-based (one-time)
+            if (parsed.favorites?.length && typeof parsed.favorites[0] === 'number') {
+                parsed.favorites = parsed.favorites.map(i => state.cards[i]?.id).filter(Boolean);
+            }
+            if (parsed.completedCards?.length && typeof parsed.completedCards[0] === 'number') {
+                parsed.completedCards = parsed.completedCards.map(i => state.cards[i]?.id).filter(Boolean);
+            }
+            if (parsed.notes && Object.keys(parsed.notes).some(k => /^\d+$/.test(k))) {
+                const migrated = {};
+                for (const [k, v] of Object.entries(parsed.notes)) {
+                    const idx = parseInt(k);
+                    if (!isNaN(idx) && state.cards[idx]) migrated[state.cards[idx].id] = v;
+                    else migrated[k] = v;
+                }
+                parsed.notes = migrated;
+            }
             Object.assign(state, parsed);
-            // Bounds-check against current card count
             if (state.currentCardIndex >= state.cards.length) state.currentCardIndex = 0;
-            state.favorites = state.favorites.filter(i => i < state.cards.length);
-            state.completedCards = state.completedCards.filter(i => i < state.cards.length);
         }
     } catch (e) { console.error('loadState:', e); }
 }
@@ -98,10 +114,10 @@ function loadCurrentCard() {
     }
 
     // Favorite state
-    $.favBtn.classList.toggle('active', state.favorites.includes(state.currentCardIndex));
+    $.favBtn.classList.toggle('active', state.favorites.includes(card.id));
 
     // Note indicator
-    $.noteBtn.classList.toggle('has-note', !!state.notes[state.currentCardIndex]);
+    $.noteBtn.classList.toggle('has-note', !!state.notes[card.id]);
 
     // Category-specific accent
     $.cardWrapper.className = 'card-wrapper';
@@ -140,8 +156,9 @@ function randomCard() {
 
 function flipCard() {
     $.cardWrapper.classList.toggle('flipped');
-    if (!state.completedCards.includes(state.currentCardIndex)) {
-        state.completedCards.push(state.currentCardIndex);
+    const id = cardId(state.currentCardIndex);
+    if (!state.completedCards.includes(id)) {
+        state.completedCards.push(id);
         saveState();
         checkAchievements();
     }
@@ -159,13 +176,13 @@ function animateCardTransition(callback) {
 
 // ===== FAVORITES =====
 function toggleFavorite() {
-    const idx = state.currentCardIndex;
-    if (state.favorites.includes(idx)) {
-        state.favorites = state.favorites.filter(i => i !== idx);
+    const id = cardId(state.currentCardIndex);
+    if (state.favorites.includes(id)) {
+        state.favorites = state.favorites.filter(i => i !== id);
         $.favBtn.classList.remove('active');
         showToast('הוסר מהמועדפים');
     } else {
-        state.favorites.push(idx);
+        state.favorites.push(id);
         $.favBtn.classList.add('active');
         showToast('נוסף למועדפים ❤️');
     }
@@ -174,7 +191,8 @@ function toggleFavorite() {
 
 // ===== NOTES =====
 function openNoteEditor() {
-    $.noteText.value = state.notes[state.currentCardIndex] || '';
+    const id = cardId(state.currentCardIndex);
+    $.noteText.value = state.notes[id] || '';
     $.noteEditor.classList.add('open');
     setTimeout(() => $.noteText.focus(), 300);
 }
@@ -182,9 +200,10 @@ function openNoteEditor() {
 function closeNoteEditor() { $.noteEditor.classList.remove('open'); }
 
 function saveNote() {
+    const id = cardId(state.currentCardIndex);
     const text = $.noteText.value.trim();
-    if (text) { state.notes[state.currentCardIndex] = text; showToast('ההערה נשמרה'); }
-    else { delete state.notes[state.currentCardIndex]; showToast('ההערה נמחקה'); }
+    if (text) { state.notes[id] = text; showToast('ההערה נשמרה'); }
+    else { delete state.notes[id]; showToast('ההערה נמחקה'); }
     $.noteBtn.classList.toggle('has-note', !!text);
     saveState();
     closeNoteEditor();
@@ -223,13 +242,13 @@ function setupModals() {
 function buildAlbumGrid(filter = 'all') {
     $.albumGrid.innerHTML = '';
     state.cards.forEach((card, i) => {
-        if (filter === 'favorites' && !state.favorites.includes(i)) return;
+        if (filter === 'favorites' && !state.favorites.includes(card.id)) return;
         if (filter !== 'all' && filter !== 'favorites' && card.category !== filter) return;
 
         const el = document.createElement('div');
         el.className = 'grid-item unlocked';
         if (i === state.currentCardIndex) el.classList.add('current');
-        if (state.completedCards.includes(i)) el.classList.add('completed');
+        if (state.completedCards.includes(card.id)) el.classList.add('completed');
         // Show topic as label, short title below
         const topicSpan = document.createElement('div');
         topicSpan.className = 'grid-topic';
@@ -239,7 +258,7 @@ function buildAlbumGrid(filter = 'all') {
         titleSpan.className = 'grid-title';
         titleSpan.textContent = card.title.replace(/<[^>]*>/g, ' ').trim();
         el.appendChild(titleSpan);
-        if (state.favorites.includes(i)) {
+        if (state.favorites.includes(card.id)) {
             const heart = document.createElement('div');
             heart.className = 'grid-stats';
             heart.innerHTML = '<span class="grid-heart">♥</span>';
@@ -566,8 +585,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupEvents();
     applySettings();
 
-    // Always start with a random card
-    state.currentCardIndex = Math.floor(Math.random() * state.cards.length);
+    // Resume saved position (loadState already restored currentCardIndex)
     loadCurrentCard();
 
     // Wire install banner buttons
