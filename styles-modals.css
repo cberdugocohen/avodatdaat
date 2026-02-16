@@ -465,7 +465,7 @@ input:checked + .toggle-slider:before {
 /* Toast */
 .toast { 
     position: fixed; 
-    bottom: 45px; 
+    bottom: 110px; 
     left: 50%; 
     transform: translateX(-50%) translateY(20px); 
     background: #111; 
@@ -570,133 +570,6 @@ input:checked + .toggle-slider:before {
     color: #777;
 }
 
-/* Onboarding */
-.onboarding-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(255,255,255,0.98);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.4s;
-}
-
-.onboarding-overlay.show {
-    opacity: 1;
-    pointer-events: all;
-}
-
-.onboarding-card {
-    background: white;
-    width: 90%;
-    max-width: 360px;
-    border-radius: 16px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-    border: 1px solid #f0f0f0;
-    position: relative;
-    overflow: hidden;
-}
-
-.onboarding-close {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    font-size: 16px;
-    color: #CCC;
-    cursor: pointer;
-    z-index: 10;
-}
-
-.onboarding-content {
-    padding: 40px 24px;
-    text-align: center;
-    min-height: 260px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.onboarding-step {
-    display: none;
-}
-
-.onboarding-step.active {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    animation: fadeIn 0.5s;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.onboarding-icon {
-    font-size: 40px;
-    margin-bottom: 20px;
-    color: var(--gold-deep);
-}
-
-.onboarding-step h3 {
-    font-family: 'Frank Ruhl Libre', serif;
-    font-size: 22px;
-    margin: 0 0 12px 0;
-    color: var(--text-main);
-}
-
-.onboarding-step p {
-    font-size: 15px;
-    color: #777;
-    margin: 0;
-    line-height: 1.5;
-}
-
-.onboarding-nav {
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid #f8f8f8;
-}
-
-.onboarding-dots {
-    display: flex;
-    gap: 8px;
-}
-
-.dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #EEE;
-    transition: all 0.3s;
-}
-
-.dot.active {
-    background: var(--gold-deep);
-    width: 20px;
-    border-radius: 4px;
-}
-
-.onboarding-next {
-    background: var(--gold-deep);
-    color: white;
-    border: none;
-    padding: 8px 20px;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.onboarding-next:hover {
-    background: var(--gold-mid);
-}
 
 /* Responsive Styles */
 @media (max-width: 360px) {
@@ -712,9 +585,6 @@ input:checked + .toggle-slider:before {
         max-width: 300px; 
     }
     
-    .controls {
-        gap: 30px;
-    }
 }
 
 @media (min-height: 800px) {
@@ -735,8 +605,7 @@ input:checked + .toggle-slider:before {
 
 .dark-theme .modal-card,
 .dark-theme .note-editor,
-.dark-theme .achievement,
-.dark-theme .onboarding-card {
+.dark-theme .achievement {
     background: #222;
     border-color: #333;
 }
@@ -776,8 +645,7 @@ input:checked + .toggle-slider:before {
 }
 
 .dark-theme .help-section li,
-.dark-theme .help-section p,
-.dark-theme .onboarding-step p {
+.dark-theme .help-section p {
     color: #AAA;
 }
 

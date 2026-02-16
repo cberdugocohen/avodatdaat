@@ -109,7 +109,7 @@ function loadCurrentCard() {
 
     // Category-specific accent
     $.cardWrapper.className = 'card-wrapper';
-    const catMap = { 'פרשת בא': 'category-ba', 'פרשת שמות': 'category-shmot', 'פרשת וארא': 'category-vaera', 'פרשת בשלח': 'category-beshalach' };
+    const catMap = { 'פרשת בא': 'category-ba', 'פרשת שמות': 'category-shmot', 'פרשת וארא': 'category-vaera', 'פרשת בשלח': 'category-beshalach', 'פרשת משפטים': 'category-mishpatim' };
     if (catMap[card.category]) $.cardWrapper.classList.add(catMap[card.category]);
 
     // Card number label
@@ -124,11 +124,15 @@ function loadCurrentCard() {
 
 // ===== NAVIGATION =====
 function nextCard() {
-    randomCard();
+    if (state.cards.length < 2) return;
+    const idx = (state.currentCardIndex + 1) % state.cards.length;
+    animateCardTransition(() => { state.currentCardIndex = idx; loadCurrentCard(); saveState(); });
 }
 
 function prevCard() {
-    randomCard();
+    if (state.cards.length < 2) return;
+    const idx = (state.currentCardIndex - 1 + state.cards.length) % state.cards.length;
+    animateCardTransition(() => { state.currentCardIndex = idx; loadCurrentCard(); saveState(); });
 }
 
 function randomCard() {
@@ -572,8 +576,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Always start with a random card
     state.currentCardIndex = Math.floor(Math.random() * state.cards.length);
     loadCurrentCard();
-    localStorage.setItem('merhav_onboarded', 'true');
-
     // Wire install banner buttons
     const installBtn = document.getElementById('installBtn');
     const dismissBtn = document.getElementById('installDismiss');
