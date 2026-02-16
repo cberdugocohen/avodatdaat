@@ -367,6 +367,21 @@ input:checked + .toggle-slider:before {
     background: #FFF5F5;
 }
 
+/* Note Backdrop */
+.note-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.3);
+    z-index: 99;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+.note-backdrop.open {
+    opacity: 1;
+    pointer-events: all;
+}
+
 /* Note Editor */
 .note-editor {
     position: fixed;

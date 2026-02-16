@@ -33,6 +33,7 @@
 /* Theme Variations */
 .dark-theme {
     --bg-body: #1A1A1A;
+    --bg-body-edge: #111;
     --text-main: #F0F0F0;
     --gold-deep: #D4AF37;
     --gold-mid: #F1C40F;
@@ -41,6 +42,7 @@
 
 .blue-theme {
     --bg-body: #EFF5FB;
+    --bg-body-edge: #D6E6F7;
     --text-main: #1A2A3A;
     --gold-deep: #3B7DD8;
     --gold-mid: #6BABEB;
@@ -50,6 +52,7 @@
 
 .green-theme {
     --bg-body: #EFF7F0;
+    --bg-body-edge: #D4EDD6;
     --text-main: #1A2E1C;
     --gold-deep: #2B7A32;
     --gold-mid: #4CAF50;
@@ -68,7 +71,7 @@ body {
     align-items: center; 
     justify-content: center;
     overflow: hidden;
-    background-image: radial-gradient(circle at center, var(--bg-body) 0%, #EBE7DF 100%);
+    background-image: radial-gradient(circle at center, var(--bg-body) 0%, var(--bg-body-edge, #EBE7DF) 100%);
     touch-action: pan-y;
     -webkit-tap-highlight-color: transparent;
     transition: background-color 0.3s ease;

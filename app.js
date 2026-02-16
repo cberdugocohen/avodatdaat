@@ -98,6 +98,9 @@ function loadCurrentCard() {
     const card = state.cards[state.currentCardIndex];
     if (!card) return;
 
+    // Reset scroll position on both faces
+    document.querySelectorAll('.card-content-scroll').forEach(el => el.scrollTop = 0);
+
     // Front (content contains HTML: <br>, <strong>, <em>)
     $.frontTitle.innerHTML = card.title;
     $.frontContent.innerHTML = card.content;
@@ -194,10 +197,14 @@ function openNoteEditor() {
     const id = cardId(state.currentCardIndex);
     $.noteText.value = state.notes[id] || '';
     $.noteEditor.classList.add('open');
+    document.getElementById('noteBackdrop').classList.add('open');
     setTimeout(() => $.noteText.focus(), 300);
 }
 
-function closeNoteEditor() { $.noteEditor.classList.remove('open'); }
+function closeNoteEditor() {
+    $.noteEditor.classList.remove('open');
+    document.getElementById('noteBackdrop').classList.remove('open');
+}
 
 function saveNote() {
     const id = cardId(state.currentCardIndex);
@@ -216,7 +223,7 @@ function openModal(id) {
     const modal = document.getElementById(id);
     if (!modal) return;
     _modalTrigger = document.activeElement;
-    if (id === 'albumModal') buildAlbumGrid();
+    if (id === 'albumModal') { updateTabCounts(); buildAlbumGrid(); }
     modal.classList.add('open');
     // Focus first interactive element
     const focusable = modal.querySelector('button, [tabindex]:not([tabindex="-1"]), input');
@@ -275,12 +282,14 @@ function buildAlbumGrid(filter = 'all') {
             heart.innerHTML = '<span class="grid-heart">♥</span>';
             el.appendChild(heart);
         }
-        el.addEventListener('click', () => {
+        const goToCard = () => {
             state.currentCardIndex = i;
             loadCurrentCard();
             saveState();
             closeModal('albumModal');
-        });
+        };
+        el.addEventListener('click', goToCard);
+        el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goToCard(); } });
         $.albumGrid.appendChild(el);
     });
     // Empty state
@@ -290,6 +299,19 @@ function buildAlbumGrid(filter = 'all') {
         empty.textContent = filter === 'favorites' ? 'עדיין אין מועדפים — לחצי ❤ על כרטיס כדי להוסיף' : 'אין כרטיסים בקטגוריה זו';
         $.albumGrid.appendChild(empty);
     }
+}
+
+function updateTabCounts() {
+    document.querySelectorAll('#albumTabs .tab').forEach(tab => {
+        const f = tab.dataset.filter;
+        if (f === 'all') return; // no count for "all"
+        let n;
+        if (f === 'favorites') n = state.favorites.length;
+        else n = state.cards.filter(c => c.category === f).length;
+        // Strip old count
+        const base = tab.textContent.replace(/\s*\(\d+\)$/, '');
+        tab.textContent = `${base} (${n})`;
+    });
 }
 
 function setupAlbumTabs() {
@@ -367,10 +389,14 @@ function importData() {
         reader.onload = ev => {
             try {
                 const d = JSON.parse(ev.target.result);
-                if (d.favorites) state.favorites = d.favorites;
-                if (d.completedCards) state.completedCards = d.completedCards;
-                if (d.settings) state.settings = d.settings;
-                if (d.notes) state.notes = d.notes;
+                if (!d || typeof d !== 'object') throw new Error('invalid');
+                if (Array.isArray(d.favorites)) state.favorites = d.favorites.filter(f => typeof f === 'string');
+                if (Array.isArray(d.completedCards)) state.completedCards = d.completedCards.filter(c => typeof c === 'string');
+                if (d.settings && typeof d.settings === 'object') {
+                    if (['default','dark','blue','green'].includes(d.settings.theme)) state.settings.theme = d.settings.theme;
+                    if (['small','medium','large'].includes(d.settings.fontSize)) state.settings.fontSize = d.settings.fontSize;
+                }
+                if (d.notes && typeof d.notes === 'object' && !Array.isArray(d.notes)) state.notes = d.notes;
                 saveState(); applySettings(); loadCurrentCard();
                 showToast('הנתונים יובאו בהצלחה');
             } catch (err) { showToast('שגיאה ביבוא — קובץ לא תקין'); }
@@ -515,6 +541,7 @@ function setupEvents() {
     // Note editor
     $.noteSaveBtn.addEventListener('click', saveNote);
     $.noteCloseBtn.addEventListener('click', closeNoteEditor);
+    document.getElementById('noteBackdrop').addEventListener('click', closeNoteEditor);
 
     // Keyboard
     document.addEventListener('keydown', e => {
@@ -554,6 +581,7 @@ function setupEvents() {
         $.cardWrapper.style.transform = '';
         if (Math.abs(diff) > 60) { diff > 0 ? prevCard() : nextCard(); }
     }, { passive: true });
+    $.scene.addEventListener('touchcancel', () => { $.cardWrapper.style.transform = ''; }, { passive: true });
 }
 
 // ===== SERVICE WORKER =====
