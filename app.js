@@ -114,7 +114,7 @@ function loadCurrentCard() {
 
     // Card number label
     if ($.cardNumberLabel) {
-        $.cardNumberLabel.textContent = `כרטיס ${state.currentCardIndex + 1} מתוך ${state.cards.length}`;
+        $.cardNumberLabel.textContent = `${state.currentCardIndex + 1}/${state.cards.length}`;
     }
 
     // Announce
@@ -140,16 +140,20 @@ function randomCard() {
     let idx;
     do { idx = Math.floor(Math.random() * state.cards.length); } while (idx === state.currentCardIndex);
     animateCardTransition(() => { state.currentCardIndex = idx; loadCurrentCard(); saveState(); });
-    showToast('קלף חדש נשלף ✨');
 }
 
 function flipCard() {
     $.cardWrapper.classList.toggle('flipped');
+    // Subtle pulse feedback
+    $.cardWrapper.style.transition = 'transform 1s cubic-bezier(0.2, 0.8, 0.2, 1)';
     if (!state.completedCards.includes(state.currentCardIndex)) {
         state.completedCards.push(state.currentCardIndex);
         saveState();
         checkAchievements();
     }
+    // Dismiss flip hint on first flip
+    const hint = document.getElementById('flipHint');
+    if (hint) { hint.style.opacity = '0'; setTimeout(() => hint.remove(), 500); localStorage.setItem('merhav_flipped', 'true'); }
 }
 
 function animateCardTransition(callback) {
@@ -576,6 +580,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Always start with a random card
     state.currentCardIndex = Math.floor(Math.random() * state.cards.length);
     loadCurrentCard();
+
+    // First-time flip hint
+    if (!localStorage.getItem('merhav_flipped')) {
+        const hint = document.createElement('div');
+        hint.id = 'flipHint';
+        hint.textContent = 'לחצי על הכרטיס לגלות עבודת דעת ↑';
+        hint.style.cssText = 'position:fixed;bottom:52px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--gold-deep);font-family:Assistant,sans-serif;font-weight:600;opacity:0.7;z-index:40;pointer-events:none;animation:fadeInUp 1s ease-out 1.5s both;white-space:nowrap;';
+        document.body.appendChild(hint);
+    }
+
     // Wire install banner buttons
     const installBtn = document.getElementById('installBtn');
     const dismissBtn = document.getElementById('installDismiss');

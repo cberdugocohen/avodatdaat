@@ -465,7 +465,7 @@ input:checked + .toggle-slider:before {
 /* Toast */
 .toast { 
     position: fixed; 
-    bottom: 110px; 
+    bottom: 60px; 
     left: 50%; 
     transform: translateX(-50%) translateY(20px); 
     background: #111; 
