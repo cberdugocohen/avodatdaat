@@ -177,13 +177,13 @@ textarea:focus {
     perspective: 2000px; 
     position: relative; 
     z-index: 10;
-    width: 90vw; 
-    max-width: 340px; 
-    height: 55dvh; 
-    max-height: 500px; 
-    min-height: 340px;
-    margin-top: 50px;
-    margin-bottom: 54px;
+    width: 92vw; 
+    max-width: 400px; 
+    height: calc(100dvh - 110px);
+    max-height: 640px; 
+    min-height: 400px;
+    margin-top: 52px;
+    margin-bottom: 48px;
     animation: fadeInUp 1s ease-out 0.2s both;
 }
 
@@ -336,8 +336,6 @@ textarea:focus {
     display: flex; 
     flex-direction: column;
     position: relative;
-    mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
 }
 
 .card-content-scroll::-webkit-scrollbar { 
@@ -345,6 +343,12 @@ textarea:focus {
 }
 .card-content-scroll::-webkit-scrollbar-track { background: transparent; }
 .card-content-scroll::-webkit-scrollbar-thumb { background: rgba(191,149,63,0.25); border-radius: 3px; }
+
+/* Scroll fade only on back face */
+.back .card-content-scroll {
+    mask-image: linear-gradient(to bottom, black 82%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 82%, transparent 100%);
+}
 
 .card-body {
     font-family: 'Frank Ruhl Libre', serif;
@@ -481,24 +485,25 @@ textarea:focus {
 .card-number-label:active { opacity: 1; }
 
 .bar-btn {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    border: none;
-    background: transparent;
-    color: #999;
-    font-size: 13px;
+    border: 1px solid rgba(0,0,0,0.08);
+    background: white;
+    color: #777;
+    font-size: 14px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.2s;
     flex-shrink: 0;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     -webkit-tap-highlight-color: transparent;
 }
-.bar-btn:active { transform: scale(0.85); }
+.bar-btn:active { transform: scale(0.88); }
 .bar-btn.nav { color: var(--gold-deep); font-size: 16px; font-weight: 700; }
-.bar-btn.accent { background: var(--gold-light); font-size: 14px; }
+.bar-btn.accent { background: var(--gold-light); border-color: rgba(191,149,63,0.15); font-size: 14px; }
 
 /* Favorite states */
 .bar-btn.fav svg { fill: none; stroke: #999; stroke-width: 2; }
@@ -588,10 +593,10 @@ textarea:focus {
     background: rgba(30,30,30,0.92);
     border-top-color: rgba(255,255,255,0.08);
 }
-.dark-theme .bar-btn { color: #777; }
+.dark-theme .bar-btn { background: #2A2A2A; border-color: #3A3A3A; color: #888; }
 .dark-theme .bar-btn.nav { color: var(--gold-deep); }
-.dark-theme .bar-btn.accent { background: rgba(212,175,55,0.15); }
-.dark-theme .bar-btn.fav svg { stroke: #777; }
+.dark-theme .bar-btn.accent { background: rgba(212,175,55,0.15); border-color: rgba(212,175,55,0.2); }
+.dark-theme .bar-btn.fav svg { stroke: #888; }
 .dark-theme .goto-dialog-content {
     background: #2A2A2A;
 }
