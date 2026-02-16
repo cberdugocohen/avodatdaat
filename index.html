@@ -18,18 +18,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;600;700;800&family=Frank+Ruhl+Libre:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=11">
-    <link rel="stylesheet" href="styles-modals.css?v=11">
+    <link rel="stylesheet" href="styles.css?v=12">
+    <link rel="stylesheet" href="styles-modals.css?v=12">
 
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js" defer></script>
-    <script src="data.js?v=11" defer></script>
-    <script src="app.js?v=11" defer></script>
+    <script src="data.js?v=12" defer></script>
+    <script src="app.js?v=12" defer></script>
     <script>
     // Force clear old SW caches on version mismatch
     if ('serviceWorker' in navigator && 'caches' in window) {
         caches.keys().then(names => {
-            names.forEach(name => { if (name !== 'merhav-hadaat-v11') caches.delete(name); });
+            names.forEach(name => { if (name !== 'merhav-hadaat-v12') caches.delete(name); });
         });
     }
     </script>
@@ -62,7 +62,7 @@
         <div class="modal-card">
             <div class="modal-header">
                 <h3>הגדרות</h3>
-                <div class="modal-close">✕</div>
+                <button class="modal-close" aria-label="סגירה">✕</button>
             </div>
             <div class="modal-content">
                 <div class="settings-section">
@@ -83,14 +83,6 @@
                     </div>
                 </div>
                 <div class="settings-section">
-                    <h4>צלילים</h4>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="soundToggle" checked>
-                        <span class="toggle-slider"></span>
-                        <span class="toggle-label">צלילי מערכת</span>
-                    </label>
-                </div>
-                <div class="settings-section">
                     <h4>ניהול נתונים</h4>
                     <div class="data-buttons">
                         <button class="data-btn" id="exportDataBtn">גיבוי נתונים</button>
@@ -107,7 +99,7 @@
         <div class="modal-card">
             <div class="modal-header">
                 <h3>אוסף התובנות</h3>
-                <div class="modal-close">✕</div>
+                <button class="modal-close" aria-label="סגירה">✕</button>
             </div>
             <div class="tabs" id="albumTabs">
                 <div class="tab active" data-filter="all">כל הקלפים</div>
@@ -132,14 +124,15 @@
         <div class="modal-card">
             <div class="modal-header">
                 <h3>עזרה</h3>
-                <div class="modal-close">✕</div>
+                <button class="modal-close" aria-label="סגירה">✕</button>
             </div>
             <div class="help-content">
                 <div class="help-section">
                     <h4>איך להשתמש</h4>
                     <ul>
                         <li><strong>לחיצה על הכרטיס</strong> — הפכי לגילוי עבודת הדעת</li>
-                        <li><strong>חצים / 🔄</strong> — שליפת קלף חדש</li>
+                        <li><strong>חצים ← →</strong> — כרטיס הבא / הקודם</li>
+                        <li><strong>🔄</strong> — שליפת קלף אקראי</li>
                         <li><strong>❤️ לב</strong> — הוספה/הסרה מהמועדפים</li>
                         <li><strong>✏️ עיפרון</strong> — הוספת הערה אישית לכרטיס</li>
                         <li><strong>↗ שיתוף</strong> — שמירה/שיתוף הכרטיס כתמונה</li>
@@ -148,7 +141,7 @@
                 <div class="help-section">
                     <h4>קיצורי מקלדת</h4>
                     <ul>
-                        <li><strong>← / →</strong> — שליפת קלף חדש</li>
+                        <li><strong>← / →</strong> — כרטיס הבא / הקודם</li>
                         <li><strong>רווח / Enter</strong> — הפיכת כרטיס</li>
                         <li><strong>F</strong> — מועדפים · <strong>N</strong> — הערה · <strong>R</strong> — אקראי</li>
                         <li><strong>Esc</strong> — סגירת חלון</li>
@@ -172,11 +165,6 @@
             </div>
         </div>
     </header>
-    <!-- Hidden refs for JS compatibility -->
-    <span id="dayLabelText" style="display:none"></span>
-    <span id="progressPct" style="display:none"></span>
-    <div id="progressBar" style="display:none"></div>
-
     <!-- Card Scene -->
     <div class="scene" id="scene">
         <div class="card-wrapper" id="cardWrapper" role="button" tabindex="0" aria-label="כרטיס תוכן — לחצי להפוך">

@@ -60,6 +60,9 @@
     cursor: pointer;
     font-size: 20px;
     color: #CCC;
+    background: none;
+    border: none;
+    padding: 4px;
     transition: all 0.2s;
 }
 
@@ -589,7 +592,7 @@ input:checked + .toggle-slider:before {
 
 @media (min-height: 800px) {
     .scene { 
-        height: 72dvh; 
+        height: calc(100dvh - 130px); 
     }
 }
 
@@ -598,6 +601,12 @@ input:checked + .toggle-slider:before {
     background: #222;
     box-shadow: 0 10px 30px -10px rgba(0,0,0,0.3);
 }
+.dark-theme .back { background-color: #1E1E1E; }
+.dark-theme .bsd { color: #444; }
+.dark-theme .source-text { color: #666; }
+.dark-theme .step-desc { color: #AAA; }
+.dark-theme .hint { color: var(--gold-mid); }
+.dark-theme .card-body strong { background: linear-gradient(to top, rgba(212,175,55,0.1) 0%, transparent 40%); }
 
 .dark-theme .modal-overlay {
     background: rgba(26,26,26,0.96);

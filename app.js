@@ -22,9 +22,6 @@ function cacheDom() {
         frontCategory:  document.getElementById('frontCategory'),
         frontSource:    document.getElementById('frontSource'),
         backSteps:      document.getElementById('backSteps'),
-        progressBar:    document.getElementById('progressBar'),
-        dayLabel:       document.getElementById('dayLabelText'),
-        progressPct:    document.getElementById('progressPct'),
         favBtn:         document.getElementById('favBtn'),
         noteBtn:        document.getElementById('noteBtn'),
         shareBtn:       document.getElementById('shareBtn'),
@@ -39,7 +36,6 @@ function cacheDom() {
         noteText:       document.getElementById('noteText'),
         noteCloseBtn:   document.getElementById('noteCloseBtn'),
         noteSaveBtn:    document.getElementById('noteSaveBtn'),
-        soundToggle:    document.getElementById('soundToggle'),
         albumGrid:      document.getElementById('albumGrid'),
         scene:          document.getElementById('scene'),
         exportBtn:      document.getElementById('exportDataBtn'),
@@ -144,8 +140,6 @@ function randomCard() {
 
 function flipCard() {
     $.cardWrapper.classList.toggle('flipped');
-    // Subtle pulse feedback
-    $.cardWrapper.style.transition = 'transform 1s cubic-bezier(0.2, 0.8, 0.2, 1)';
     if (!state.completedCards.includes(state.currentCardIndex)) {
         state.completedCards.push(state.currentCardIndex);
         saveState();
@@ -156,7 +150,7 @@ function flipCard() {
 function animateCardTransition(callback) {
     $.cardWrapper.classList.add('drawing-out');
     setTimeout(() => {
-        $.cardWrapper.classList.remove('drawing-out');
+        $.cardWrapper.classList.remove('drawing-out', 'flipped');
         callback();
         $.cardWrapper.classList.add('drawing-in');
         setTimeout(() => $.cardWrapper.classList.remove('drawing-in'), 600);
@@ -275,7 +269,6 @@ function setupAlbumTabs() {
 function applySettings() {
     setTheme(state.settings.theme);
     setFontSize(state.settings.fontSize);
-    $.soundToggle.checked = state.settings.soundEnabled;
     updateSettingsUI();
 }
 
@@ -310,10 +303,6 @@ function setupSettings() {
     });
     document.querySelectorAll('.font-size-btn').forEach(btn => {
         btn.addEventListener('click', () => setFontSize(btn.dataset.fontSize));
-    });
-    $.soundToggle.addEventListener('change', () => {
-        state.settings.soundEnabled = $.soundToggle.checked;
-        saveState();
     });
     $.exportBtn.addEventListener('click', exportData);
     $.importBtn.addEventListener('click', importData);
