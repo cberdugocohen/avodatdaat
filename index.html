@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>מרחב הדעת — מסר מהלב</title>
+    <meta name="description" content="מסע של תובנות, עבודת דעת והשראה יומית עמוקה">
+    <meta property="og:title" content="✦ מרחב הדעת — מסר מהלב ✦">
+    <meta property="og:description" content="מסע של תובנות, עבודת דעת והשראה יומית עמוקה.">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#BF953F">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="מרחב הדעת">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;600;700;800&family=Frank+Ruhl+Libre:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=3">
+    <link rel="stylesheet" href="styles-modals.css?v=3">
+
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js" defer></script>
+    <script src="data.js?v=3" defer></script>
+    <script src="app.js?v=3" defer></script>
+    <script>
+    // Force clear old SW caches on version mismatch
+    if ('serviceWorker' in navigator && 'caches' in window) {
+        caches.keys().then(names => {
+            names.forEach(name => { if (name !== 'merhav-hadaat-v3') caches.delete(name); });
+        });
+    }
+    </script>
+</head>
+<body>
+    <!-- Accessibility: Screen Reader Announcer -->
+    <div id="srAnnouncer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Loader -->
+    <div id="loader"><div class="spinner"></div><div class="loader-text">טוען...</div></div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Install Banner (shown only on mobile when deployed) -->
+    <div id="installBanner" style="display:none;position:fixed;bottom:90px;left:50%;transform:translateX(-50%);align-items:center;gap:8px;padding:6px 6px 6px 18px;border-radius:50px;background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 4px 24px rgba(0,0,0,0.12);border:1px solid rgba(191,149,63,0.25);z-index:1000;direction:rtl;white-space:nowrap;">
+        <button id="installBtn" style="padding:8px 18px;border-radius:50px;border:none;background:linear-gradient(135deg,#BF953F,#D4AF37);color:white;font-family:Assistant,sans-serif;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(191,149,63,0.3);">📲 שמרי למסך הבית</button>
+        <button id="installDismiss" style="width:28px;height:28px;border-radius:50%;border:none;background:rgba(0,0,0,0.06);color:#999;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+    </div>
+
+    <!-- Achievement -->
+    <div id="achievement" class="achievement">
+        <div class="achievement-icon">🏆</div>
+        <div class="achievement-title"></div>
+        <div class="achievement-subtitle"></div>
+    </div>
+
+    <!-- Onboarding -->
+    <div id="onboarding" class="onboarding-overlay">
+        <div class="onboarding-card">
+            <div class="onboarding-close" id="onboardingClose">✕</div>
+            <div class="onboarding-content">
+                <div class="onboarding-step active">
+                    <div class="onboarding-icon">✦</div>
+                    <h3>ברוכות הבאות למרחב הדעת</h3>
+                    <p>מסע של תובנות והשראה יומית</p>
+                </div>
+                <div class="onboarding-step">
+                    <div class="onboarding-icon">👆</div>
+                    <h3>הפכי את הכרטיס</h3>
+                    <p>לחצי על הכרטיס כדי לגלות את עבודת הדעת</p>
+                </div>
+                <div class="onboarding-step">
+                    <div class="onboarding-icon">❤️</div>
+                    <h3>שמרי במועדפים</h3>
+                    <p>לחצי על הלב לשמירת תובנות מיוחדות</p>
+                </div>
+                <div class="onboarding-step">
+                    <div class="onboarding-icon">👈 👉</div>
+                    <h3>שלפי קלף חדש</h3>
+                    <p>החליקי או לחצי על החצים לשליפת קלף חדש</p>
+                </div>
+            </div>
+            <div class="onboarding-nav">
+                <div class="onboarding-dots">
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+                <button class="onboarding-next" id="onboardingNext">הבא</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>הגדרות</h3>
+                <div class="modal-close">✕</div>
+            </div>
+            <div class="modal-content">
+                <div class="settings-section">
+                    <h4>ערכת נושא</h4>
+                    <div class="theme-options">
+                        <button class="theme-btn active" data-theme="default"><div class="theme-preview default-theme"></div><span>ברירת מחדל</span></button>
+                        <button class="theme-btn" data-theme="dark"><div class="theme-preview dark-theme"></div><span>מצב לילה</span></button>
+                        <button class="theme-btn" data-theme="blue"><div class="theme-preview blue-theme"></div><span>כחול</span></button>
+                        <button class="theme-btn" data-theme="green"><div class="theme-preview green-theme"></div><span>ירוק</span></button>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h4>גודל טקסט</h4>
+                    <div class="font-size-options">
+                        <button class="font-size-btn" data-font-size="small">א</button>
+                        <button class="font-size-btn active" data-font-size="medium">א</button>
+                        <button class="font-size-btn" data-font-size="large">א</button>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h4>צלילים</h4>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="soundToggle" checked>
+                        <span class="toggle-slider"></span>
+                        <span class="toggle-label">צלילי מערכת</span>
+                    </label>
+                </div>
+                <div class="settings-section">
+                    <h4>ניהול נתונים</h4>
+                    <div class="data-buttons">
+                        <button class="data-btn" id="exportDataBtn">גיבוי נתונים</button>
+                        <button class="data-btn" id="importDataBtn">שחזור מגיבוי</button>
+                        <button class="data-btn danger" id="resetDataBtn">איפוס נתונים</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Album Modal -->
+    <div class="modal-overlay" id="albumModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>אוסף התובנות</h3>
+                <div class="modal-close">✕</div>
+            </div>
+            <div class="tabs" id="albumTabs">
+                <div class="tab active" data-filter="all">כל הקלפים</div>
+                <div class="tab heart-tab" data-filter="favorites">❤ מועדפים</div>
+            </div>
+            <div class="grid-container" id="albumGrid"></div>
+        </div>
+    </div>
+
+    <!-- Note Editor -->
+    <div class="note-editor" id="noteEditor">
+        <div class="note-header">
+            <h4>✏️ הערות אישיות</h4>
+            <button id="noteCloseBtn">✕</button>
+        </div>
+        <textarea id="noteText" placeholder="רשמי כאן את המחשבות והתובנות שלך..."></textarea>
+        <button class="save-note-btn" id="noteSaveBtn">שמירה</button>
+    </div>
+
+    <!-- Help Modal -->
+    <div class="modal-overlay" id="helpModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>עזרה</h3>
+                <div class="modal-close">✕</div>
+            </div>
+            <div class="help-content">
+                <div class="help-section">
+                    <h4>איך להשתמש</h4>
+                    <ul>
+                        <li><strong>לחיצה על הכרטיס</strong> — הפכי לגילוי עבודת הדעת</li>
+                        <li><strong>חצים / 🔄</strong> — שליפת קלף חדש</li>
+                        <li><strong>❤️ לב</strong> — הוספה/הסרה מהמועדפים</li>
+                        <li><strong>✏️ עיפרון</strong> — הוספת הערה אישית לכרטיס</li>
+                        <li><strong>↗ שיתוף</strong> — שמירה/שיתוף הכרטיס כתמונה</li>
+                    </ul>
+                </div>
+                <div class="help-section">
+                    <h4>קיצורי מקלדת</h4>
+                    <ul>
+                        <li><strong>← / →</strong> — שליפת קלף חדש</li>
+                        <li><strong>רווח / Enter</strong> — הפיכת כרטיס</li>
+                        <li><strong>F</strong> — מועדפים · <strong>N</strong> — הערה · <strong>R</strong> — אקראי</li>
+                        <li><strong>Esc</strong> — סגירת חלון</li>
+                    </ul>
+                </div>
+                <div class="help-section">
+                    <h4>אודות</h4>
+                    <p>מרחב הדעת הוא מסע של תובנות, עבודת דעת והשראה יומית עמוקה. בכל כרטיס תיחשפי לתובנה שתעזור לך להתפתח ולצמוח.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <header class="journey-header">
+        <div class="header-content">
+            <div class="logo">מרחב הדעת</div>
+            <div class="badges-container">
+                <button class="action-btn" data-modal="settingsModal" aria-label="הגדרות" title="הגדרות">⚙️</button>
+                <button class="action-btn" data-modal="albumModal" aria-label="אוסף" title="אוסף הכרטיסים">🗂️</button>
+                <button class="action-btn" data-modal="helpModal" aria-label="עזרה" title="עזרה">❔</button>
+            </div>
+        </div>
+    </header>
+    <!-- Hidden refs for JS compatibility -->
+    <span id="dayLabelText" style="display:none"></span>
+    <span id="progressPct" style="display:none"></span>
+    <div id="progressBar" style="display:none"></div>
+
+    <!-- Card Scene -->
+    <div class="scene" id="scene">
+        <div class="card-wrapper" id="cardWrapper" role="button" tabindex="0" aria-label="כרטיס תוכן — לחצי להפוך">
+            <div class="face front" id="faceFront">
+                <div class="bsd">בס"ד</div>
+                <div class="category-text" id="frontCategory">מידות</div>
+                <div class="card-title" id="frontTitle">טוען...</div>
+                <div class="card-content-scroll">
+                    <div class="card-body" id="frontContent"></div>
+                </div>
+                <div class="source-text" id="frontSource"></div>
+                <div class="hint">לחצי להפוך ↺</div>
+            </div>
+            <div class="face back" id="faceBack">
+                <div class="bsd">בס"ד</div>
+                <div class="back-title">עבודת הדעת</div>
+                <div class="card-content-scroll">
+                    <div id="backSteps"></div>
+                </div>
+                <div class="hint">לחצי לחזור</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="navigation-controls">
+        <button class="nav-button" id="prevBtn" aria-label="שלפי קלף" title="שלפי קלף">→</button>
+        <button class="nav-button random-button" id="randomBtn" aria-label="שלפי קלף" title="שלפי קלף">🔄</button>
+        <button class="nav-button" id="nextBtn" aria-label="שלפי קלף" title="שלפי קלף">←</button>
+    </div>
+
+    <!-- Bottom Controls -->
+    <div class="controls">
+        <button class="action-icon note" id="noteBtn" aria-label="הערות אישיות" title="✏️ הוספת הערה אישית">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 20h9"></path>
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+            </svg>
+        </button>
+        <button class="action-icon" id="shareBtn" aria-label="שיתוף" title="שיתוף כרטיס">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            </svg>
+        </button>
+        <button class="action-icon fav" id="favBtn" aria-label="מועדפים" title="הוספה למועדפים">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+        </button>
+    </div>
+</body>
+</html>

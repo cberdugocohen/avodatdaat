@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head><meta charset="UTF-8"><title>ניקוי Cache</title></head>
+<body style="font-family:sans-serif;text-align:center;padding:40px;">
+<h2>מנקה cache...</h2>
+<p id="status">אנא המתיני...</p>
+<script>
+(async function() {
+    const status = document.getElementById('status');
+    try {
+        // Unregister all service workers
+        const regs = await navigator.serviceWorker.getRegistrations();
+        for (const r of regs) await r.unregister();
+        // Delete all caches
+        const names = await caches.keys();
+        for (const n of names) await caches.delete(n);
+        status.innerHTML = '✅ Cache נוקה בהצלחה!<br><br><a href="index.html" style="font-size:20px;">לחצי כאן לחזור לאפליקציה</a>';
+    } catch(e) {
+        status.textContent = '❌ שגיאה: ' + e.message;
+    }
+})();
+</script>
+</body>
+</html>

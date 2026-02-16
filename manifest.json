@@ -1,0 +1,24 @@
+{
+  "name": "מרחב הדעת",
+  "short_name": "מרחב הדעת",
+  "description": "תובנות, עבודת דעת והשראה יומית עמוקה",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FDFBF7",
+  "theme_color": "#BF953F",
+  "lang": "he",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
