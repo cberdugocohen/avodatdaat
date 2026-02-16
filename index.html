@@ -18,18 +18,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;600;700;800&family=Frank+Ruhl+Libre:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=5">
-    <link rel="stylesheet" href="styles-modals.css?v=5">
+    <link rel="stylesheet" href="styles.css?v=6">
+    <link rel="stylesheet" href="styles-modals.css?v=6">
 
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js" defer></script>
-    <script src="data.js?v=5" defer></script>
-    <script src="app.js?v=5" defer></script>
+    <script src="data.js?v=6" defer></script>
+    <script src="app.js?v=6" defer></script>
     <script>
     // Force clear old SW caches on version mismatch
     if ('serviceWorker' in navigator && 'caches' in window) {
         caches.keys().then(names => {
-            names.forEach(name => { if (name !== 'merhav-hadaat-v5') caches.delete(name); });
+            names.forEach(name => { if (name !== 'merhav-hadaat-v6') caches.delete(name); });
         });
     }
     </script>
@@ -203,32 +203,22 @@
 
     <!-- Bottom Bar -->
     <div class="bottom-bar">
-        <div class="card-number-row">
-            <span class="card-number-label" id="cardNumberLabel">כרטיס 1 מתוך 24</span>
-            <button class="goto-btn" id="gotoBtn" title="מעבר לכרטיס לפי מספר">�</button>
+        <button class="card-number-label" id="cardNumberLabel" title="לחצי לעבור לכרטיס לפי מספר">כרטיס 1 מתוך 24</button>
+        <div class="bottom-row">
+            <button class="nav-button" id="prevBtn" aria-label="הקודם">&#8594;</button>
+            <button class="nav-button random-button" id="randomBtn" aria-label="שלפי קלף">&#x1F504;</button>
+            <button class="nav-button" id="nextBtn" aria-label="הבא">&#8592;</button>
         </div>
-        <div class="bottom-controls">
-            <button class="nav-button" id="prevBtn" aria-label="שלפי קלף" title="שלפי קלף">→</button>
-            <button class="action-icon note" id="noteBtn" aria-label="הערות אישיות" title="✏️ הוספת הערה אישית">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 20h9"></path>
-                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-                </svg>
+        <div class="bottom-row">
+            <button class="action-icon note" id="noteBtn" aria-label="הערה">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
             </button>
-            <button class="action-icon" id="shareBtn" aria-label="שיתוף" title="שיתוף כרטיס">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle>
-                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-                </svg>
+            <button class="action-icon" id="shareBtn" aria-label="שיתוף">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             </button>
-            <button class="nav-button random-button" id="randomBtn" aria-label="שלפי קלף" title="שלפי קלף">🔄</button>
-            <button class="action-icon fav" id="favBtn" aria-label="מועדפים" title="הוספה למועדפים">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                </svg>
+            <button class="action-icon fav" id="favBtn" aria-label="מועדפים">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
             </button>
-            <button class="nav-button" id="nextBtn" aria-label="שלפי קלף" title="שלפי קלף">←</button>
         </div>
     </div>
 

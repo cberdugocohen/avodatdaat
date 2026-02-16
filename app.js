@@ -46,7 +46,6 @@ function cacheDom() {
         importBtn:      document.getElementById('importDataBtn'),
         resetBtn:       document.getElementById('resetDataBtn'),
         cardNumberLabel:document.getElementById('cardNumberLabel'),
-        gotoBtn:        document.getElementById('gotoBtn'),
         gotoDialog:     document.getElementById('gotoDialog'),
         gotoInput:      document.getElementById('gotoInput'),
         gotoSubmit:     document.getElementById('gotoSubmit'),
@@ -472,8 +471,8 @@ function setupEvents() {
     $.noteBtn.addEventListener('click', e => { e.stopPropagation(); openNoteEditor(); });
     $.shareBtn.addEventListener('click', e => { e.stopPropagation(); shareCard(); });
 
-    // Go-to card
-    $.gotoBtn.addEventListener('click', e => { e.stopPropagation(); openGotoDialog(); });
+    // Go-to card (card number label is clickable)
+    $.cardNumberLabel.addEventListener('click', e => { e.stopPropagation(); openGotoDialog(); });
     $.gotoClose.addEventListener('click', closeGotoDialog);
     $.gotoSubmit.addEventListener('click', submitGoto);
     $.gotoInput.addEventListener('keydown', e => { if (e.key === 'Enter') submitGoto(); });
