@@ -248,12 +248,16 @@ function setupModals() {
 // ===== ALBUM =====
 function buildAlbumGrid(filter = 'all') {
     $.albumGrid.innerHTML = '';
+    let count = 0;
     state.cards.forEach((card, i) => {
         if (filter === 'favorites' && !state.favorites.includes(card.id)) return;
         if (filter !== 'all' && filter !== 'favorites' && card.category !== filter) return;
+        count++;
 
         const el = document.createElement('div');
         el.className = 'grid-item unlocked';
+        el.setAttribute('role', 'button');
+        el.setAttribute('tabindex', '0');
         if (i === state.currentCardIndex) el.classList.add('current');
         if (state.completedCards.includes(card.id)) el.classList.add('completed');
         // Show topic as label, short title below
@@ -279,6 +283,13 @@ function buildAlbumGrid(filter = 'all') {
         });
         $.albumGrid.appendChild(el);
     });
+    // Empty state
+    if (count === 0) {
+        const empty = document.createElement('div');
+        empty.style.cssText = 'grid-column:1/-1;text-align:center;padding:40px 20px;color:#BBB;font-size:14px;';
+        empty.textContent = filter === 'favorites' ? 'עדיין אין מועדפים — לחצי ❤ על כרטיס כדי להוסיף' : 'אין כרטיסים בקטגוריה זו';
+        $.albumGrid.appendChild(empty);
+    }
 }
 
 function setupAlbumTabs() {
@@ -507,13 +518,16 @@ function setupEvents() {
 
     // Keyboard
     document.addEventListener('keydown', e => {
-        if (document.querySelector('.modal-overlay.open') || $.noteEditor.classList.contains('open')) {
-            if (e.key === 'Escape') {
-                closeModal(document.querySelector('.modal-overlay.open'));
-                closeNoteEditor();
-            }
+        // Escape closes any open overlay
+        if (e.key === 'Escape') {
+            const openModal = document.querySelector('.modal-overlay.open');
+            if (openModal) { closeModal(openModal); return; }
+            if ($.noteEditor.classList.contains('open')) { closeNoteEditor(); return; }
+            if ($.gotoDialog.style.display !== 'none') { closeGotoDialog(); return; }
             return;
         }
+        // Block shortcuts when overlays are open
+        if (document.querySelector('.modal-overlay.open') || $.noteEditor.classList.contains('open') || $.gotoDialog.style.display !== 'none') return;
         switch (e.key) {
             case 'ArrowRight': prevCard(); break;
             case 'ArrowLeft':  nextCard(); break;
@@ -521,7 +535,6 @@ function setupEvents() {
             case 'f': case 'F': toggleFavorite(); break;
             case 'n': case 'N': openNoteEditor(); break;
             case 'r': case 'R': randomCard(); break;
-            case 'Escape': break;
         }
     });
 

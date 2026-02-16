@@ -40,17 +40,21 @@
 }
 
 .blue-theme {
-    --bg-body: var(--theme-blue-bg);
-    --text-main: var(--theme-blue-text);
-    --gold-deep: var(--theme-blue-accent);
+    --bg-body: #EFF5FB;
+    --text-main: #1A2A3A;
+    --gold-deep: #3B7DD8;
     --gold-mid: #6BABEB;
+    --gold-light: #D6E6F7;
+    --heart-red: #E0475B;
 }
 
 .green-theme {
-    --bg-body: var(--theme-green-bg);
-    --text-main: var(--theme-green-text);
-    --gold-deep: var(--theme-green-accent);
+    --bg-body: #EFF7F0;
+    --text-main: #1A2E1C;
+    --gold-deep: #2B7A32;
     --gold-mid: #4CAF50;
+    --gold-light: #D4EDD6;
+    --heart-red: #D64045;
 }
 
 /* Base Styles */
@@ -614,10 +618,15 @@ textarea:focus {
 .dark-theme .goto-dialog-content {
     background: #2A2A2A;
 }
+.dark-theme .goto-dialog-content h4 { color: #F0F0F0; }
 .dark-theme .goto-input {
     background: #1A1A1A;
     border-color: #3A3A3A;
     color: #F0F0F0;
+}
+.dark-theme .goto-close {
+    background: rgba(255,255,255,0.08);
+    color: #999;
 }
 
 
