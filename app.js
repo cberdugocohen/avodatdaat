@@ -409,7 +409,10 @@ function showConfetti() {
 async function shareCard() {
     $.loader.classList.add('active');
     try {
-        const canvas = await html2canvas($.scene, { backgroundColor: '#FDFBF7', scale: 2, useCORS: true });
+        // Capture the visible face, not the 3D scene
+        const isFlipped = $.cardWrapper.classList.contains('flipped');
+        const face = isFlipped ? document.getElementById('faceBack') : document.getElementById('faceFront');
+        const canvas = await html2canvas(face, { backgroundColor: '#FDFBF7', scale: 2, useCORS: true, width: face.offsetWidth, height: face.offsetHeight });
         const blob = await new Promise(r => canvas.toBlob(r, 'image/png'));
         if (navigator.share) {
             const plainTitle = (state.cards[state.currentCardIndex]?.title || '').replace(/<[^>]*>/g, ' ');
