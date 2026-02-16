@@ -39,9 +39,6 @@ function cacheDom() {
         noteText:       document.getElementById('noteText'),
         noteCloseBtn:   document.getElementById('noteCloseBtn'),
         noteSaveBtn:    document.getElementById('noteSaveBtn'),
-        onboarding:     document.getElementById('onboarding'),
-        onboardingNext: document.getElementById('onboardingNext'),
-        onboardingClose:document.getElementById('onboardingClose'),
         soundToggle:    document.getElementById('soundToggle'),
         albumGrid:      document.getElementById('albumGrid'),
         scene:          document.getElementById('scene'),
@@ -368,31 +365,6 @@ function resetData() {
     showToast('כל הנתונים אופסו');
 }
 
-// ===== ONBOARDING =====
-function setupOnboarding() {
-    if (localStorage.getItem('merhav_onboarded')) return;
-    const overlay = $.onboarding;
-    const steps = overlay.querySelectorAll('.onboarding-step');
-    const dots = overlay.querySelectorAll('.dot');
-    let current = 0;
-    overlay.classList.add('show');
-
-    function goStep(n) {
-        steps[current].classList.remove('active');
-        dots[current].classList.remove('active');
-        current = n;
-        if (current >= steps.length) { finish(); return; }
-        steps[current].classList.add('active');
-        dots[current].classList.add('active');
-        $.onboardingNext.textContent = current === steps.length - 1 ? 'התחילי!' : 'הבא';
-    }
-    function finish() {
-        overlay.classList.remove('show');
-        localStorage.setItem('merhav_onboarded', 'true');
-    }
-    $.onboardingNext.addEventListener('click', () => goStep(current + 1));
-    $.onboardingClose.addEventListener('click', finish);
-}
 
 // ===== ACHIEVEMENTS =====
 function checkAchievements() {
@@ -559,6 +531,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
 function showInstallBanner() {
     const banner = document.getElementById('installBanner');
     if (!banner || localStorage.getItem('merhav_install_dismissed')) return;
+    if (isInStandaloneMode()) return; // Already installed
     banner.style.display = 'flex';
 }
 
@@ -600,7 +573,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Always start with a random card
     state.currentCardIndex = Math.floor(Math.random() * state.cards.length);
     loadCurrentCard();
-    setupOnboarding();
+    localStorage.setItem('merhav_onboarded', 'true');
 
     // Wire install banner buttons
     const installBtn = document.getElementById('installBtn');
