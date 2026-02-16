@@ -48,6 +48,12 @@ function cacheDom() {
         exportBtn:      document.getElementById('exportDataBtn'),
         importBtn:      document.getElementById('importDataBtn'),
         resetBtn:       document.getElementById('resetDataBtn'),
+        cardNumberLabel:document.getElementById('cardNumberLabel'),
+        gotoBtn:        document.getElementById('gotoBtn'),
+        gotoDialog:     document.getElementById('gotoDialog'),
+        gotoInput:      document.getElementById('gotoInput'),
+        gotoSubmit:     document.getElementById('gotoSubmit'),
+        gotoClose:      document.getElementById('gotoClose'),
     };
 }
 
@@ -109,6 +115,11 @@ function loadCurrentCard() {
     $.cardWrapper.className = 'card-wrapper';
     const catMap = { 'פרשת בא': 'category-ba', 'פרשת שמות': 'category-shmot', 'פרשת וארא': 'category-vaera', 'פרשת בשלח': 'category-beshalach' };
     if (catMap[card.category]) $.cardWrapper.classList.add(catMap[card.category]);
+
+    // Card number label
+    if ($.cardNumberLabel) {
+        $.cardNumberLabel.textContent = `כרטיס ${state.currentCardIndex + 1} מתוך ${state.cards.length}`;
+    }
 
     // Announce
     const plainTitle = card.title.replace(/<[^>]*>/g, ' ');
@@ -422,7 +433,7 @@ function showConfetti() {
 async function shareCard() {
     $.loader.classList.add('active');
     try {
-        const canvas = await html2canvas($.scene, { backgroundColor: null, scale: 2 });
+        const canvas = await html2canvas($.scene, { backgroundColor: '#FDFBF7', scale: 2, useCORS: true });
         const blob = await new Promise(r => canvas.toBlob(r, 'image/png'));
         if (navigator.share) {
             const plainTitle = (state.cards[state.currentCardIndex]?.title || '').replace(/<[^>]*>/g, ' ');
@@ -450,6 +461,30 @@ function announce(msg) {
     if ($.srAnnouncer) $.srAnnouncer.textContent = msg;
 }
 
+// ===== GO-TO CARD =====
+function openGotoDialog() {
+    $.gotoDialog.style.display = 'flex';
+    $.gotoInput.value = '';
+    $.gotoInput.max = state.cards.length;
+    $.gotoInput.focus();
+}
+
+function closeGotoDialog() {
+    $.gotoDialog.style.display = 'none';
+}
+
+function submitGoto() {
+    const num = parseInt($.gotoInput.value);
+    if (isNaN(num) || num < 1 || num > state.cards.length) {
+        showToast(`הכניסי מספר בין 1 ל-${state.cards.length}`);
+        return;
+    }
+    const idx = num - 1;
+    animateCardTransition(() => { state.currentCardIndex = idx; loadCurrentCard(); saveState(); });
+    closeGotoDialog();
+    showToast(`כרטיס ${num} ✨`);
+}
+
 // ===== EVENTS =====
 function setupEvents() {
     // Card flip
@@ -464,6 +499,13 @@ function setupEvents() {
     $.favBtn.addEventListener('click', e => { e.stopPropagation(); toggleFavorite(); });
     $.noteBtn.addEventListener('click', e => { e.stopPropagation(); openNoteEditor(); });
     $.shareBtn.addEventListener('click', e => { e.stopPropagation(); shareCard(); });
+
+    // Go-to card
+    $.gotoBtn.addEventListener('click', e => { e.stopPropagation(); openGotoDialog(); });
+    $.gotoClose.addEventListener('click', closeGotoDialog);
+    $.gotoSubmit.addEventListener('click', submitGoto);
+    $.gotoInput.addEventListener('keydown', e => { if (e.key === 'Enter') submitGoto(); });
+    $.gotoDialog.addEventListener('click', e => { if (e.target === $.gotoDialog) closeGotoDialog(); });
 
     // Note editor
     $.noteSaveBtn.addEventListener('click', saveNote);

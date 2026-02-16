@@ -1,5 +1,5 @@
 // Service Worker for Merhav Hadaat — Offline Support
-const CACHE_NAME = 'merhav-hadaat-v3';
+const CACHE_NAME = 'merhav-hadaat-v4';
 const ASSETS = [
     './',
     './index.html',
@@ -8,6 +8,7 @@ const ASSETS = [
     './data.js',
     './app.js',
     './manifest.json',
+    './icon.svg',
     './icon-192.png',
     './icon-512.png',
     'https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;600;700;800&family=Frank+Ruhl+Libre:wght@300;400;500;700;900&display=swap'
