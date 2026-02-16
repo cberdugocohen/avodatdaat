@@ -46,6 +46,7 @@ function cacheDom() {
         gotoInput:      document.getElementById('gotoInput'),
         gotoSubmit:     document.getElementById('gotoSubmit'),
         gotoClose:      document.getElementById('gotoClose'),
+        noteBackdrop:   document.getElementById('noteBackdrop'),
     };
 }
 
@@ -197,13 +198,13 @@ function openNoteEditor() {
     const id = cardId(state.currentCardIndex);
     $.noteText.value = state.notes[id] || '';
     $.noteEditor.classList.add('open');
-    document.getElementById('noteBackdrop').classList.add('open');
+    if ($.noteBackdrop) $.noteBackdrop.classList.add('open');
     setTimeout(() => $.noteText.focus(), 300);
 }
 
 function closeNoteEditor() {
     $.noteEditor.classList.remove('open');
-    document.getElementById('noteBackdrop').classList.remove('open');
+    if ($.noteBackdrop) $.noteBackdrop.classList.remove('open');
 }
 
 function saveNote() {
@@ -541,7 +542,7 @@ function setupEvents() {
     // Note editor
     $.noteSaveBtn.addEventListener('click', saveNote);
     $.noteCloseBtn.addEventListener('click', closeNoteEditor);
-    document.getElementById('noteBackdrop').addEventListener('click', closeNoteEditor);
+    if ($.noteBackdrop) $.noteBackdrop.addEventListener('click', closeNoteEditor);
 
     // Keyboard
     document.addEventListener('keydown', e => {
