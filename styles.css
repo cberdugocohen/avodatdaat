@@ -179,11 +179,11 @@ textarea:focus {
     z-index: 10;
     width: 92vw; 
     max-width: 400px; 
-    height: calc(100dvh - 110px);
+    height: calc(100dvh - 120px);
     max-height: 640px; 
-    min-height: 400px;
+    min-height: 380px;
     margin-top: 52px;
-    margin-bottom: 48px;
+    margin-bottom: 56px;
     animation: fadeInUp 1s ease-out 0.2s both;
 }
 
@@ -460,7 +460,8 @@ textarea:focus {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-top: 1px solid rgba(0,0,0,0.05);
-    padding: 6px 12px max(6px, env(safe-area-inset-bottom));
+    padding: 8px 12px;
+    padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
     z-index: 50;
     display: flex;
     align-items: center;
