@@ -121,7 +121,7 @@ textarea:focus {
 
 .logo {
     font-family: 'Frank Ruhl Libre', serif; 
-    color: #333; 
+    color: var(--gold-deep); 
     letter-spacing: 2px; 
     font-weight: 800; 
     font-size: 1rem;
@@ -308,7 +308,8 @@ textarea:focus {
     top: 18px; 
     right: 24px; 
     font-size: 9px; 
-    color: #DDD; 
+    color: var(--text-main); 
+    opacity: 0.15;
     z-index: 10; 
     font-family: 'Frank Ruhl Libre', serif;
 }
@@ -374,7 +375,8 @@ textarea:focus {
 
 .source-text {
     font-size: 10px; 
-    color: #BBB; 
+    color: var(--text-main); 
+    opacity: 0.45;
     text-align: center; 
     font-style: italic;
     margin-top: 20px; 
@@ -438,7 +440,8 @@ textarea:focus {
 
 .step-desc { 
     font-size: 14px; 
-    color: #777; 
+    color: var(--text-main); 
+    opacity: 0.55;
     line-height: 1.5; 
     font-family: 'Assistant', sans-serif; 
     font-weight: 300;
@@ -510,8 +513,15 @@ textarea:focus {
 .bar-btn.accent { background: var(--gold-light); border-color: rgba(191,149,63,0.15); font-size: 14px; }
 
 /* Favorite states */
-.bar-btn.fav svg { fill: none; stroke: #999; stroke-width: 2; }
+.bar-btn.fav svg { fill: none; stroke: #999; stroke-width: 2; transition: all 0.3s; }
 .bar-btn.fav.active svg { fill: var(--heart-red); stroke: var(--heart-red); }
+.bar-btn.fav.active { animation: heartPop 0.4s ease-out; }
+@keyframes heartPop {
+    0% { transform: scale(1); }
+    30% { transform: scale(1.35); }
+    60% { transform: scale(0.9); }
+    100% { transform: scale(1); }
+}
 
 /* Note indicator */
 .bar-btn.has-note { color: var(--techelet); position: relative; }

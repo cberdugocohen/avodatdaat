@@ -19,18 +19,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;600;700;800&family=Frank+Ruhl+Libre:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=13">
-    <link rel="stylesheet" href="styles-modals.css?v=13">
+    <link rel="stylesheet" href="styles.css?v=14">
+    <link rel="stylesheet" href="styles-modals.css?v=14">
 
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js" defer></script>
-    <script src="data.js?v=13" defer></script>
-    <script src="app.js?v=13" defer></script>
+    <script src="data.js?v=14" defer></script>
+    <script src="app.js?v=14" defer></script>
     <script>
     // Force clear old SW caches on version mismatch
     if ('serviceWorker' in navigator && 'caches' in window) {
         caches.keys().then(names => {
-            names.forEach(name => { if (name !== 'merhav-hadaat-v13') caches.delete(name); });
+            names.forEach(name => { if (name !== 'merhav-hadaat-v14') caches.delete(name); });
         });
     }
     </script>
@@ -102,9 +102,14 @@
                 <h3>אוסף התובנות</h3>
                 <button class="modal-close" aria-label="סגירה">✕</button>
             </div>
-            <div class="tabs" id="albumTabs">
-                <div class="tab active" data-filter="all">כל הקלפים</div>
-                <div class="tab heart-tab" data-filter="favorites">❤ מועדפים</div>
+            <div class="tabs" id="albumTabs" role="tablist">
+                <button class="tab active" data-filter="all" role="tab">כל הקלפים</button>
+                <button class="tab heart-tab" data-filter="favorites" role="tab">❤ מועדפים</button>
+                <button class="tab" data-filter="פרשת בא" role="tab">בא</button>
+                <button class="tab" data-filter="פרשת שמות" role="tab">שמות</button>
+                <button class="tab" data-filter="פרשת וארא" role="tab">וארא</button>
+                <button class="tab" data-filter="פרשת בשלח" role="tab">בשלח</button>
+                <button class="tab" data-filter="פרשת משפטים" role="tab">משפטים</button>
             </div>
             <div class="grid-container" id="albumGrid"></div>
         </div>

@@ -1,5 +1,5 @@
 // Service Worker for Merhav Hadaat — Offline Support
-const CACHE_NAME = 'merhav-hadaat-v13';
+const CACHE_NAME = 'merhav-hadaat-v14';
 const ASSETS = [
     './',
     './index.html',

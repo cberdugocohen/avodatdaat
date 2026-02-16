@@ -210,17 +210,24 @@ function saveNote() {
 }
 
 // ===== MODALS =====
+let _modalTrigger = null;
+
 function openModal(id) {
     const modal = document.getElementById(id);
     if (!modal) return;
+    _modalTrigger = document.activeElement;
     if (id === 'albumModal') buildAlbumGrid();
     modal.classList.add('open');
+    // Focus first interactive element
+    const focusable = modal.querySelector('button, [tabindex]:not([tabindex="-1"]), input');
+    if (focusable) setTimeout(() => focusable.focus(), 100);
     announce('נפתח חלון ' + (modal.querySelector('.modal-header h3')?.textContent || ''));
 }
 
 function closeModal(modal) {
     if (typeof modal === 'string') modal = document.getElementById(modal);
     if (modal) modal.classList.remove('open');
+    if (_modalTrigger) { _modalTrigger.focus(); _modalTrigger = null; }
 }
 
 function setupModals() {
@@ -518,11 +525,20 @@ function setupEvents() {
         }
     });
 
-    // Touch swipe
+    // Touch swipe with visual feedback
     let touchX = 0;
     $.scene.addEventListener('touchstart', e => { touchX = e.changedTouches[0].screenX; }, { passive: true });
+    $.scene.addEventListener('touchmove', e => {
+        const diff = e.changedTouches[0].screenX - touchX;
+        const tilt = Math.max(-8, Math.min(8, diff / 15));
+        const shift = Math.max(-30, Math.min(30, diff / 3));
+        $.cardWrapper.style.transform = $.cardWrapper.classList.contains('flipped')
+            ? `rotateY(180deg) translateX(${-shift}px) rotateZ(${-tilt}deg)`
+            : `translateX(${shift}px) rotateZ(${tilt}deg)`;
+    }, { passive: true });
     $.scene.addEventListener('touchend', e => {
         const diff = e.changedTouches[0].screenX - touchX;
+        $.cardWrapper.style.transform = '';
         if (Math.abs(diff) > 60) { diff > 0 ? prevCard() : nextCard(); }
     }, { passive: true });
 }
