@@ -632,6 +632,26 @@ function isInStandaloneMode() {
     return window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
 }
 
+// ===== WHATSAPP LINK LOGIC =====
+function initWhatsAppLink() {
+    const whatsappLink = document.querySelector('.whatsapp-link');
+    if (!whatsappLink) return;
+
+    // Check if user already joined
+    if (localStorage.getItem('merhav_whatsapp_joined')) {
+        whatsappLink.classList.add('hidden');
+        return;
+    }
+
+    // Mark as joined when clicked
+    whatsappLink.addEventListener('click', () => {
+        localStorage.setItem('merhav_whatsapp_joined', 'true');
+        setTimeout(() => {
+            whatsappLink.classList.add('hidden');
+        }, 300);
+    });
+}
+
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
     cacheDom();
@@ -651,4 +671,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dismissBtn = document.getElementById('installDismiss');
     if (installBtn) installBtn.addEventListener('click', installApp);
     if (dismissBtn) dismissBtn.addEventListener('click', dismissInstallBanner);
+
+    // Initialize WhatsApp link
+    initWhatsAppLink();
 });

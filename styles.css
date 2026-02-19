@@ -662,3 +662,37 @@ textarea:focus {
     border-color: var(--gold-deep) !important;
     box-shadow: 0 0 0 2px rgba(191, 149, 63, 0.3);
 }
+
+/* WhatsApp Link */
+.whatsapp-link {
+    position: fixed;
+    bottom: 80px;
+    left: 20px;
+    font-size: 13px;
+    color: var(--gold-deep);
+    text-decoration: none;
+    opacity: 0.6;
+    transition: opacity 0.3s ease, transform 0.2s ease;
+    z-index: 50;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    padding: 6px 12px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(191, 149, 63, 0.15);
+}
+
+.whatsapp-link:hover {
+    opacity: 1;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(191, 149, 63, 0.2);
+}
+
+.whatsapp-link:active {
+    transform: translateY(0);
+}
+
+.whatsapp-link.hidden {
+    display: none;
+}
