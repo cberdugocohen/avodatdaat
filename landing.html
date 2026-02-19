@@ -382,6 +382,82 @@
     transform: translateY(0);
   }
   
+  .whatsapp-section {
+    padding: 80px 24px;
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .whatsapp-card {
+    background: linear-gradient(135deg, rgba(13,13,20,0.95), rgba(26,26,46,0.95));
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 24px;
+    padding: 48px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .whatsapp-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .whatsapp-icon {
+    font-size: 48px;
+    margin-bottom: 24px;
+    display: block;
+    filter: drop-shadow(0 0 20px rgba(201,168,76,0.4));
+  }
+
+  .whatsapp-title {
+    font-family: 'Arial Hebrew', Georgia, serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+
+  .whatsapp-text {
+    font-size: 18px;
+    line-height: 1.8;
+    color: var(--text-light);
+    margin-bottom: 32px;
+    opacity: 0.9;
+  }
+
+  .whatsapp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: white;
+    font-family: 'Arial Hebrew', Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 18px 40px;
+    border-radius: 60px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    letter-spacing: 0.3px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 40px rgba(37,211,102,0.25), 0 4px 12px rgba(0,0,0,0.4);
+  }
+
+  .whatsapp-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 60px rgba(37,211,102,0.35), 0 8px 24px rgba(0,0,0,0.5);
+  }
+
   footer {
     padding: 40px 24px;
     text-align: center;
@@ -490,6 +566,21 @@
   </a>
   
   <p class="free-tag">✦ נכנסים ישר לאפליקציה · אפס הרשמה ✦</p>
+</section>
+
+<section class="whatsapp-section reveal">
+  <div class="whatsapp-card">
+    <span class="whatsapp-icon">💎</span>
+    <h2 class="whatsapp-title">נקודה למחשבה</h2>
+    <p class="whatsapp-text">
+      כאן מקבלים כלים לשיפור איכות החיים ותפיסת המציאות.<br>
+      במינון שלא מציק, בלי חפירות, ורק מה שיעזור לך לפרוח.
+    </p>
+    <a href="https://chat.whatsapp.com/GI2tPV5kTtjC0jecPgpl7P?mode=gi_t" class="whatsapp-btn" target="_blank" rel="noopener noreferrer">
+      <span>להצטרפות לקבוצה השקטה</span>
+      <span>→</span>
+    </a>
+  </div>
 </section>
 
 <footer>
