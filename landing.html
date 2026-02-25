@@ -166,6 +166,12 @@
     animation: fadeUp 1s 0.4s ease both;
   }
 
+  @keyframes float {
+    0%   { transform: rotateX(8deg) rotateY(-2deg) translateY(0px); }
+    50%  { transform: rotateX(5deg) rotateY(-1deg) translateY(-10px); }
+    100% { transform: rotateX(8deg) rotateY(-2deg) translateY(0px); }
+  }
+
   .phone-frame {
     width: 100%;
     height: 100%;
@@ -177,7 +183,7 @@
       0 0 0 2px rgba(255,255,255,0.08),
       0 25px 60px rgba(0,0,0,0.7),
       0 0 50px rgba(201,168,76,0.15);
-    transform: rotateX(8deg) rotateY(-2deg);
+    animation: float 4s ease-in-out infinite;
     transition: transform 0.6s ease;
     overflow: hidden;
   }
@@ -622,7 +628,7 @@
     text-align: center;
     border-top: 1px solid rgba(255,255,255,0.05);
     color: var(--text-muted);
-    font-size: 12px;
+    font-size: 14px;
   }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -641,8 +647,9 @@
   <p class="hero-subtitle-line">דרשות שנכתבו לפני אלפי שנים — למצב שאת בו היום</p>
 
   <p class="hero-tagline">
-    כאן תמצאי דרש שמדבר אל מה שאת עוברת עכשיו —<br>
-    בשפה של היום, בלי ידע מוקדם.
+    בלי הרצאות ארוכות ובלי שפה קשה.<br>
+    רק רגע אחד של בהירות מול הפרשה,<br>
+    בדיוק בנקודה שבה את זקוקה לזה.
   </p>
 
   <div class="mockup-container">
@@ -672,11 +679,12 @@
   </div>
 
   <a href="./index.html" class="cta-btn">
-    <span>לפתיחת קלף אישי עכשיו</span>
+    <span>אני רוצה לשמוע מה המסר שלי</span>
     <span class="arrow">←</span>
   </a>
 
-  <p class="free-tag">✦ בלי הרשמה · בלי התחייבות · פשוט תחשבי על מה שכבד עלייך ✦</p>
+  <p class="free-tag">✦ בלי הרשמה · בלי התחייבות · חינמי לגמרי ✦</p>
+  <p style="font-size: 13px; color: rgba(201,168,76,0.5); margin-top: 8px;">נשים רבות פתחו קלף השבוע</p>
 </section>
 
 <div class="divider"></div>
@@ -739,16 +747,11 @@
     <h2 class="impact-headline" style="font-size: 32px; margin-bottom: 20px;">
       למה בחינם? <em>הלב של הפרויקט.</em>
     </h2>
-    <p style="color: rgba(232,228,220,0.7); line-height: 1.6;">
-      כי חכמת התורה לא שייכת לאף אחת במיוחד — היא שייכת לכולן.
-      בנינו את זה כמתנה, מתוך אמונה שכל אישה יהודייה מגיעה לה כלים להסתכל על החיים אחרת.
-      התוכן מבוסס על שיעורו של הרב אסף פלג לפי דרש פרשת השבוע של כבוד הרב שיינברגר.
-    </p>
 
     <ul class="free-list">
-      <li>בלי דמי מנוי ובלי אותיות קטנות</li>
-      <li>בלי איסוף נתונים (פרטיות מלאה)</li>
-      <li>מבוסס על שיעורים תורניים אמיתיים — בשפה של כולנו</li>
+      <li><strong style="color: var(--gold);">מתנה מהלב</strong> — חכמת התורה לא שייכת לאף אחת במיוחד. היא שייכת לכולן.</li>
+      <li><strong style="color: var(--gold);">פרטיות מלאה</strong> — בלי הרשמה, בלי דמי מנוי, בלי איסוף נתונים.</li>
+      <li><strong style="color: var(--gold);">הנגשה מודרנית</strong> — תוכן מבוסס שיעורים עמוקים, מוגש בשפה פשוטה ונקייה.</li>
     </ul>
   </div>
 </section>
