@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OG Image Generator - מרחב הדעת</title>
+<style>
+  body {
+    margin: 0;
+    padding: 40px;
+    background: #f0f0f0;
+    font-family: Arial, sans-serif;
+    direction: ltr;
+  }
+  
+  #controls {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 10000;
+    max-width: 300px;
+  }
+  
+  #controls h3 {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  #controls button {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  #captureBtn {
+    background: #B38728;
+    color: white;
+  }
+  
+  #captureBtn:hover {
+    background: #8B6914;
+  }
+  
+  #downloadBtn {
+    background: #4CAF50;
+    color: white;
+    display: none;
+  }
+  
+  #downloadBtn:hover {
+    background: #45a049;
+  }
+  
+  #status {
+    margin-top: 10px;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    text-align: center;
+  }
+  
+  #status.success {
+    background: #d4edda;
+    color: #155724;
+  }
+  
+  #status.error {
+    background: #f8d7da;
+    color: #721c24;
+  }
+  
+  #preview {
+    margin-top: 20px;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  #preview h4 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  #preview img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  #ogContainer {
+    width: 1200px;
+    height: 630px;
+    margin: 40px auto;
+    position: relative;
+    background: linear-gradient(135deg, #0D0D14 0%, #1A1A2E 100%);
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  }
+  
+  .og-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 100px;
+    box-sizing: border-box;
+    position: relative;
+    text-align: center;
+  }
+  
+  .og-content::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(ellipse, rgba(201,168,76,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  
+  .og-left {
+    z-index: 2;
+    max-width: 900px;
+  }
+  
+  .og-brand {
+    font-family: Georgia, serif;
+    font-size: 24px;
+    letter-spacing: 3px;
+    color: #C9A84C;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+  }
+  
+  .og-headline {
+    font-family: Georgia, serif;
+    font-size: 72px;
+    font-weight: 700;
+    color: #E8E4DC;
+    line-height: 1.2;
+    margin-bottom: 35px;
+  }
+  
+  .og-headline em {
+    color: #C9A84C;
+    font-style: italic;
+  }
+  
+  .og-tagline {
+    font-size: 24px;
+    line-height: 1.7;
+    color: rgba(232,228,220,0.85);
+    margin-bottom: 40px;
+    max-width: 850px;
+  }
+  
+  .og-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    background: linear-gradient(135deg, #8B6914, #C9A84C, #E8C870);
+    color: #0D0D14;
+    font-size: 22px;
+    font-weight: 700;
+    padding: 20px 40px;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgba(201,168,76,0.3);
+  }
+  
+  .stars {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: #E8D5A3;
+    border-radius: 50%;
+    opacity: 0.4;
+  }
+</style>
+</head>
+<body>
+
+<div id="controls">
+  <h3>📸 מחולל תמונת שיתוף</h3>
+  <button id="captureBtn">צלם תמונה (1200x630)</button>
+  <button id="downloadBtn">הורד og-image.jpg</button>
+  <div id="status"></div>
+  <div id="preview" style="display: none;">
+    <h4>תצוגה מקדימה:</h4>
+    <img id="previewImg" alt="Preview">
+  </div>
+</div>
+
+<div id="ogContainer">
+  <div class="stars" id="stars"></div>
+  <div class="og-content">
+    <div class="og-left">
+      <div class="og-brand">מרחב הדעת</div>
+      <h1 class="og-headline">
+        כשהלב מכווץ<br>
+        והראש לא מוצא מוצא —
+      </h1>
+      <p class="og-tagline">
+        קלף תורני אחד יכול לשנות את כל הזווית.<br>
+        ספרייה של קלפים דיגיטליים מבוססי שיעורי הרב,<br>
+        בשפה פשוטה, ישר ללב.
+      </p>
+      <div class="og-cta">
+        <span>לפתיחת קלף אישי</span>
+        <span>←</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+  // Generate stars
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 40; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.style.cssText = `
+      top: ${Math.random() * 100}%;
+      left: ${Math.random() * 100}%;
+    `;
+    starsEl.appendChild(star);
+  }
+  
+  const captureBtn = document.getElementById('captureBtn');
+  const downloadBtn = document.getElementById('downloadBtn');
+  const status = document.getElementById('status');
+  const preview = document.getElementById('preview');
+  const previewImg = document.getElementById('previewImg');
+  const ogContainer = document.getElementById('ogContainer');
+  
+  let capturedImage = null;
+  
+  captureBtn.addEventListener('click', async () => {
+    status.textContent = 'מצלם...';
+    status.className = '';
+    
+    try {
+      const canvas = await html2canvas(ogContainer, {
+        backgroundColor: '#0D0D14',
+        scale: 1,
+        logging: false,
+        width: 1200,
+        height: 630
+      });
+      
+      capturedImage = canvas.toDataURL('image/jpeg', 0.95);
+      previewImg.src = capturedImage;
+      preview.style.display = 'block';
+      downloadBtn.style.display = 'block';
+      
+      status.textContent = '✓ צולם בהצלחה!';
+      status.className = 'success';
+    } catch (error) {
+      status.textContent = '✗ שגיאה: ' + error.message;
+      status.className = 'error';
+    }
+  });
+  
+  downloadBtn.addEventListener('click', () => {
+    if (!capturedImage) return;
+    
+    const link = document.createElement('a');
+    link.download = 'og-image.jpg';
+    link.href = capturedImage;
+    link.click();
+    
+    status.textContent = '✓ הורד בהצלחה! עכשיו העתיקי את og-image.jpg לתיקיית הפרויקט';
+    status.className = 'success';
+  });
+</script>
+
+</body>
+</html>
