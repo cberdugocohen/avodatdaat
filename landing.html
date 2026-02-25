@@ -381,6 +381,67 @@
     opacity: 0.3;
   }
 
+  .testimonial-section {
+    padding: 80px 24px;
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .testimonial-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 20px;
+    padding: 48px 40px;
+    position: relative;
+  }
+
+  .testimonial-quote-mark {
+    font-family: Georgia, serif;
+    font-size: 80px;
+    line-height: 0.5;
+    color: var(--gold);
+    opacity: 0.4;
+    display: block;
+    margin-bottom: 24px;
+  }
+
+  .testimonial-text {
+    font-family: 'Frank Ruhl Libre', Georgia, serif;
+    font-size: 20px;
+    line-height: 1.9;
+    color: var(--text-light);
+    margin-bottom: 32px;
+    font-style: italic;
+  }
+
+  .testimonial-text strong {
+    color: var(--gold);
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .testimonial-author-line {
+    width: 32px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.5;
+  }
+
+  .testimonial-author-name {
+    font-size: 14px;
+    color: var(--gold);
+    letter-spacing: 1px;
+    opacity: 0.8;
+  }
+
   @keyframes fadeDown {
     from { opacity: 0; transform: translateY(-16px); }
     to { opacity: 1; transform: translateY(0); }
@@ -551,6 +612,26 @@
       <p class="step-desc">
         לא פתרון מוכן — זווית חדשה. לפעמים זה כל מה שצריך כדי לנשום.
       </p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="testimonial-section reveal">
+  <div class="testimonial-card">
+    <span class="testimonial-quote-mark">״</span>
+    <p class="testimonial-text">
+      כשחברה או הבת המתבגרת שלי פונה אליי עם בעיה או אכזבה —
+      אני אומרת לה <strong>לבחור מספר.</strong><br><br>
+      אנחנו קוראות ביחד את הקלף ומדברות עליו.
+      וזה <strong>תמיד קולע בול</strong> —
+      נותן לה כלים וזווית מחשבה שלא חשבה עליה.
+    </p>
+    <div class="testimonial-author">
+      <div class="testimonial-author-line"></div>
+      <span class="testimonial-author-name">אמא ומשתמשת</span>
+      <div class="testimonial-author-line"></div>
     </div>
   </div>
 </section>
