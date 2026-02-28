@@ -198,6 +198,7 @@ textarea:focus {
     width: 100%; 
     height: 100%; 
     position: relative;
+    -webkit-transform-style: preserve-3d;
     transform-style: preserve-3d;
     transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
     cursor: pointer;
@@ -257,6 +258,7 @@ textarea:focus {
     position: absolute; 
     width: 100%; 
     height: 100%; 
+    -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     border-radius: 8px;
     background: #fff;
