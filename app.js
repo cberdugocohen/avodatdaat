@@ -125,7 +125,7 @@ function loadCurrentCard() {
 
     // Category-specific accent
     $.cardWrapper.className = 'card-wrapper';
-    const catMap = { 'פרשת בא': 'category-ba', 'פרשת שמות': 'category-shmot', 'פרשת וארא': 'category-vaera', 'פרשת בשלח': 'category-beshalach', 'פרשת משפטים': 'category-mishpatim' };
+    const catMap = { 'פרשת בא': 'category-ba', 'פרשת שמות': 'category-shmot', 'פרשת וארא': 'category-vaera', 'פרשת בשלח': 'category-beshalach', 'פרשת משפטים': 'category-mishpatim', 'פרשת תרומה': 'category-truma', 'פרשת תצוה': 'category-tetzave' };
     if (catMap[card.category]) $.cardWrapper.classList.add(catMap[card.category]);
 
     // Card number label

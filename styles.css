@@ -650,6 +650,10 @@ textarea:focus {
 .category-beshalach .face.front::after { border-color: #9C6ADE; }
 .category-mishpatim .category-text { color: #E07C4F; }
 .category-mishpatim .face.front::after { border-color: #E07C4F; }
+.category-truma .category-text { color: #5B8C5A; }
+.category-truma .face.front::after { border-color: #5B8C5A; }
+.category-tetzave .category-text { color: #D4A017; }
+.category-tetzave .face.front::after { border-color: #D4A017; }
 
 
 /* Album Grid Completion Indicators */
