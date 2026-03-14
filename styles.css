@@ -654,6 +654,8 @@ textarea:focus {
 .category-truma .face.front::after { border-color: #5B8C5A; }
 .category-tetzave .category-text { color: #D4A017; }
 .category-tetzave .face.front::after { border-color: #D4A017; }
+.category-kitisa .category-text { color: #C0392B; }
+.category-kitisa .face.front::after { border-color: #C0392B; }
 
 
 /* Album Grid Completion Indicators */
